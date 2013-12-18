@@ -9,6 +9,13 @@ are using django 1.5 or lower you might get lucky enough to hit the race
 condition if there are concurrent requests. In this event, it will just
 skip the throttle on that lookup.
 
+Install
+-------
+
+.. code-block:: python
+
+    pip install django-webcache
+
 Usage
 -----
 
