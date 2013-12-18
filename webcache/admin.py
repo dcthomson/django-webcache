@@ -5,6 +5,7 @@ Created on May 17, 2013
 '''
 import urllib
 from django.contrib import admin
+from django import forms
 from models import Url
 from models import Cache
 from models import Throttle
@@ -28,6 +29,13 @@ class PostDataAdmin(admin.ModelAdmin):
     list_display = ('url', 'key', 'value')
     raw_id_fields = ('url',)
     ordering = ['url', 'key']
+    
+    # show textfield instead of textarea for key and value
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super(PostDataAdmin, self).formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == 'key' or db_field.name == 'value':
+            formfield.widget = forms.TextInput(attrs=formfield.widget.attrs)
+        return formfield
 admin.site.register(PostData, PostDataAdmin)
 
 class CacheAdmin(admin.ModelAdmin):
