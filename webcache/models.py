@@ -29,8 +29,8 @@ class Url(models.Model):
         
 class PostData(models.Model):
     url = models.ForeignKey(Url, db_index=True)
-    key = models.CharField(max_length=240)
-    value = models.CharField(max_length=240)
+    key = models.TextField()
+    value = models.TextField()
     
 
 class Cache(models.Model):
