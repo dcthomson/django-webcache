@@ -11,7 +11,7 @@ setup(
     version='0.1',
     packages=['webcache'],
     include_package_data=True,
-    license='MIT License',  # example license
+    license='MIT License',
     description='A django web caching app that supports throttling, expiration and compression.',
     long_description=README,
     url='https://github.com/dcthomson/django-webcache',
