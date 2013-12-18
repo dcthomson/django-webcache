@@ -4,7 +4,7 @@ django-webcache
 django web caching app that supports throttling, expiration and
 compression.
 
-This uses alpha code from django 1.6 for throttling transactions. If you
+This uses code from django 1.6 for throttling transactions. If you
 are using django 1.5 or lower you might get lucky enough to hit the race
 condition if there are concurrent requests. In this event, it will just
 skip the throttle on that lookup.
