@@ -1,0 +1,10 @@
+*.pyc
+build/
+dist/
+MANIFEST
+.project
+.pydevproject
+.DS_Store
+django-webcache/
+/manage.py
+/webcache/migrations/
