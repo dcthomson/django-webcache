@@ -5,6 +5,7 @@ MANIFEST
 .project
 .pydevproject
 .DS_Store
+*.egg-info
 django-webcache/
 /manage.py
 /webcache/migrations/
