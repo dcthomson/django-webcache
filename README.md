@@ -23,7 +23,7 @@ cache(url[, data=postdata][, location="path"][, expires=n |, expires=(n,m)][, ov
 | variable    | type    | description                                         |
 | ----------- | ------- | ----------------------------------------------------|
 | url         | string  | The url to retrieve / cache                         |
-| data        | dict    | POST data string                                    |
+| data        | string  | POST data string                                    |
 | location    | string  | The directory to save the cached pages to           |
 | expires     | integer or 2 item tuple of integers | Number of seconds until the cache expires, or a range from which a random number of seconds will be chosen for the expiration |
 | overwrite   | boolean | Retrieve url and cache even if cache already exists |
@@ -36,7 +36,7 @@ throttle(url[, data=postdata][, delay=n |, delay=(n,m)])
 | variable    | type             | description                                         |
 | ----------- | ---------------- | ----------------------------------------------------|
 | url         | string           | The url to retrieve / cache                         |
-| data        | dict             | POST data string                                    |
+| data        | string           | POST data string                                    |
 | delay       | integer or 2 item tuple of integers | Number of seconds to throttle, or a range from which a random number will be chosen to throttle |
 ---
 #### Cache and Throttle
@@ -46,7 +46,7 @@ cache_and_throttle(url[, data=postdata][, location="path"][, expires=n |, expire
 | variable    | type    | description                                         |
 | ----------- | ------- | ----------------------------------------------------|
 | url         | string  | The url to retrieve / cache                         |
-| data        | dict    | POST data string                                    |
+| data        | string  | POST data string                                    |
 | location    | string  | The directory to save the cached pages to           |
 | expires     | integer or 2 item tuple of integers | Number of seconds until the cache expires, or a range from which a random number of seconds will be chosen for the expiration |
 | overwrite   | boolean | Retrieve url and cache even if cache already exists |
