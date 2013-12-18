@@ -36,7 +36,6 @@ __author__ = "Drew Thomson"
     django somewhere"""
 def get_or_create_url(urlstr, data=False):
     urls = Url.objects.filter(url=urlstr)
-    print("data: %s" % data)
     if data:
         data = parse_qs(data)
         postnum = len(data)
@@ -57,14 +56,12 @@ def get_or_create_url(urlstr, data=False):
                     break
                 continue
         if postdataequal:
-            print "get_or_create_url: got"
             return (url, False)
     # save url and postdata
     dburl = Url.objects.create(url=urlstr)
     if data:
         for k, v in data.iteritems():
             PostData.objects.create(url=dburl, key=k, value=v)
-    print "get_or_create_url: created"
     return (dburl, True)
 
         
@@ -205,11 +202,8 @@ class CacheHandler(urllib2.BaseHandler):
             data = request.get_data()
         else:
             data = False
-        print("cache - default_open")
-        print("ExistsInCache: %s" % CachedResponse.ExistsInCache(request.get_full_url(), data))
         if ((not self.overwrite) and
              CachedResponse.ExistsInCache(request.get_full_url(), data)):
-            print("CacheResponse 1")
             return CachedResponse(self.location, 
                                   request, 
                                   setCacheHeader=True)    
@@ -235,14 +229,12 @@ class CacheHandler(urllib2.BaseHandler):
             if not self.accessed.returncode:
                 self.accessed.returncode = response.code
             self.accessed.save()
-            print("CacheResponse 2")
             return CachedResponse(self.location, 
                                   request, 
                                   setCacheHeader=False)
         else:
             self.accessed.fromweb = False
             self.accessed.save()
-            print("CacheResponse 3")
             return CachedResponse(self.location, 
                                   request, 
                                   setCacheHeader=True)
