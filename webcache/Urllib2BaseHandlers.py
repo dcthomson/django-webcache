@@ -21,7 +21,7 @@ from django.db import transaction
 from random import sample
 from string import digits, ascii_uppercase, ascii_lowercase
 from os import path
-from urlparse import urlparse, parse_qs
+from urlparse import urlparse, parse_qsl
 from models import Cache
 from models import Throttle
 from models import Access
@@ -37,7 +37,7 @@ __author__ = "Drew Thomson"
 def get_or_create_url(urlstr, data=False):
     urls = Url.objects.filter(url=urlstr)
     if data:
-        data = parse_qs(data)
+        data = parse_qsl(data)
         postnum = len(data)
     else:
         postnum = 0
@@ -47,9 +47,9 @@ def get_or_create_url(urlstr, data=False):
             continue
         postdataequal = True
         if data:
-            for k, v in data.iteritems():
+            for pair in data:
                 for postdata in postdatas:
-                    if postdata.key == k and postdata.value == str(v):
+                    if postdata.key == pair[0] and postdata.value == pair[1]:
                         break
                 else:
                     postdataequal = False
@@ -60,8 +60,8 @@ def get_or_create_url(urlstr, data=False):
     # save url and postdata
     dburl = Url.objects.create(url=urlstr)
     if data:
-        for k, v in data.iteritems():
-            PostData.objects.create(url=dburl, key=k, value=v)
+        for pair in data:
+            PostData.objects.create(url=dburl, key=pair[0], value=pair[1])
     return (dburl, True)
 
         
@@ -257,15 +257,15 @@ class CachedResponse(StringIO.StringIO):
                 if not data:
                     postnum = 0
                 else:
-                    poststr = parse_qs(data)
+                    poststr = parse_qsl(data)
                     postnum = len(poststr)
                 dbpostdata = PostData.objects.filter(url=c.url)
                 if postnum != len(dbpostdata):
                     continue
                 postdataequal = True
-                for k, v in poststr.iteritems():
+                for pair in poststr:
                     for pd in dbpostdata:
-                        if pd.key == k and pd.value == str(v):
+                        if pd.key == pair[0] and pd.value == pair[1]:
                             break
                     else:
                         postdataequal = False
