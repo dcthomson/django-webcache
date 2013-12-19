@@ -37,7 +37,7 @@ __author__ = "Drew Thomson"
 def get_or_create_url(urlstr, data=False):
     urls = Url.objects.filter(url=urlstr)
     if data:
-        data = parse_qsl(data)
+        data = parse_qsl(data, keep_blank_values=True)
         postnum = len(data)
     else:
         postnum = 0
@@ -257,7 +257,7 @@ class CachedResponse(StringIO.StringIO):
                 if not data:
                     postnum = 0
                 else:
-                    poststr = parse_qsl(data)
+                    poststr = parse_qsl(data, keep_blank_values=True)
                     postnum = len(poststr)
                 dbpostdata = PostData.objects.filter(url=c.url)
                 if postnum != len(dbpostdata):
