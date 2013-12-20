@@ -220,7 +220,7 @@ class CacheHandler(urllib2.BaseHandler):
         if not self.accessed.accessed:
             self.accessed.accessed = datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
         self.accessed.cache = True
-        if 'x-cache' not in response.info():
+        if 'x-django-webcache' not in response.info():
             CachedResponse.StoreInCache(self.location, 
                                         request, 
                                         response,
@@ -244,7 +244,7 @@ class CachedResponse(StringIO.StringIO):
     """An urllib2.response-like object for cached responses.
 
     To determine whether a response is cached or coming directly from
-    the network, check the x-cache header rather than the object type."""
+    the network, check the x-django-webcache header rather than the object type."""
     
     def ExistsInCache(url, data=False):
         utcnow = datetime.datetime.utcnow().replace(tzinfo=timezone.utc)
@@ -277,10 +277,10 @@ class CachedResponse(StringIO.StringIO):
     ExistsInCache = staticmethod(ExistsInCache)
 
     def StoreInCache(location, request, response, expires=False, compression=False):
+        data = False
         if request.has_data():
             data = request.get_data()
-        else:
-            data = False
+
         urlmodel = get_or_create_url(request.get_full_url(), data=data)[0]
         cache = Cache.objects.get_or_create(url=urlmodel)[0]
         
@@ -355,7 +355,10 @@ class CachedResponse(StringIO.StringIO):
     def RandFname(location, length=32):
         chars = ascii_lowercase + ascii_uppercase + digits
         fname = "".join(sample(chars, length))
-        return fname if not path.exists(os.path.join(location, fname)) else CachedResponse.RandFname(location, length)
+        if not path.exists(os.path.join(location, fname)):
+            return fname
+        else:
+            return CachedResponse.RandFname(location, length)
     RandFname = staticmethod(RandFname)
 
     def CleanDBCache():
@@ -390,7 +393,7 @@ class CachedResponse(StringIO.StringIO):
         self.code    = 200
         self.msg     = "OK"
         if setCacheHeader:
-            headerbuf += "x-cache: %s\r\n" % (self.location)
+            headerbuf += "x-django-webcache: %s\r\n" % (self.location)
         self.header = httplib.HTTPMessage(StringIO.StringIO(headerbuf))
 
     def info(self):
