@@ -138,7 +138,7 @@ Examples
 Developed By
 ============
 
--  Drew Thomson - drooby@gmail.com
+-  Drew Thomson - drew@thomson.ninja
 
 Special Thanks
 ==============
